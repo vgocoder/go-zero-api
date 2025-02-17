@@ -1,0 +1,80 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Go API Service",
+    "description": "Go-Zero API服务文档",
+    "version": "1.0.0"
+  },
+  "basePath": "/api",
+  "schemes": ["http", "https"],
+  "paths": {
+    "/products": {
+      "get": {
+        "summary": "获取产品列表",
+        "responses": {
+          "200": {
+            "description": "成功返回产品列表"
+          }
+        }
+      },
+      "post": {
+        "summary": "创建新产品",
+        "responses": {
+          "200": {
+            "description": "成功创建产品"
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "summary": "获取单个产品详情",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回产品详情"
+          }
+        }
+      },
+      "put": {
+        "summary": "更新产品信息",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功更新产品信息"
+          }
+        }
+      },
+      "delete": {
+        "summary": "删除产品",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功删除产品"
+          }
+        }
+      }
+    }
+  }
+}

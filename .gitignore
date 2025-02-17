@@ -1,0 +1,50 @@
+# Go项目通用忽略规则
+
+# 编译生成的二进制文件
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# 测试二进制文件
+*.test
+
+# 性能分析文件
+*.prof
+
+# 输出目录
+bin/
+dist/
+
+# 依赖目录
+vendor/
+
+# IDE相关文件
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# 环境变量文件
+.env
+.env.local
+
+# 日志文件
+logs/**/*.log
+*.log
+
+# Go工作区文件
+go.work
+
+# 测试缓存
+*.test
+*.tmp
+
+# 本地开发配置
+config.local.yaml
+
+# 覆盖率报告
+coverage.txt
+coverage.html

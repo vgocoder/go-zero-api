@@ -1,3 +1,21 @@
 Name: product-api
 Host: 0.0.0.0
-Port: 8888
+Port: 8889
+
+customLog:
+  mode: file
+  level: info
+  path: logs/product-api.log
+
+database:
+  host: localhost
+  port: 3306
+  username: root
+  password: password
+  dbname: product_db
+
+redis:
+  host: localhost
+  port: 6379
+  password: ""
+  db: 0

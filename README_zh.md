@@ -31,6 +31,7 @@
 - Go 1.16 或更高版本
 - go-zero 框架
 - MySQL（用于数据存储）
+- Redis（用于缓存）
 
 ## 安装
 
@@ -49,9 +50,34 @@ go mod tidy
 
 配置文件位于 `etc` 目录下，需要根据您的环境配置以下文件：
 
-- `etc/user-api.yaml`: 用户服务配置
-- `etc/product-api.yaml`: 产品服务配置
-- `etc/order-api.yaml`: 订单服务配置
+- `etc/user-api.yaml`: 用户服务配置（端口：8888）
+- `etc/product-api.yaml`: 产品服务配置（端口：8889）
+- `etc/order-api.yaml`: 订单服务配置（端口：8890）
+
+配置文件结构：
+```yaml
+Name: service-name
+Host: 0.0.0.0
+Port: port-number
+
+customLog:
+  mode: file
+  level: info
+  path: logs/service-name.log
+
+database:
+  host: localhost
+  port: 3306
+  username: root
+  password: password
+  dbname: database_name
+
+redis:
+  host: localhost
+  port: 6379
+  password: ""
+  db: 0
+```
 
 ## 运行服务
 
@@ -59,54 +85,47 @@ go mod tidy
 
 1. 构建项目
 ```bash
-go build -o goapi cmd/main.go
+go build -o goapi main.go
 ```
 
-2. 查看可用命令
+2. 直接运行（无需构建）
+```bash
+# 启动用户服务
+go run main.go service user -f etc/user-api.yaml
+
+# 启动产品服务
+go run main.go service product -f etc/product-api.yaml
+
+# 启动订单服务
+go run main.go service order -f etc/order-api.yaml
+```
+
+3. 查看可用命令
 ```bash
 ./goapi --help
 ```
 
-3. 启动服务
+4. 启动服务
 ```bash
 # 启动用户服务
-./goapi user -f etc/user-api.yaml
+./goapi service user -f etc/user-api.yaml
 
 # 启动产品服务
-./goapi product -f etc/product-api.yaml
+./goapi service product -f etc/product-api.yaml
 
 # 启动订单服务
-./goapi order -f etc/order-api.yaml
+./goapi service order -f etc/order-api.yaml
 ```
 
-4. 查看版本
+5. 查看版本
 ```bash
 ./goapi --version
 ```
 
 ## API 文档
 
-API 定义文件位于 `api` 目录下：
+服务启动后，API 文档可在 `/swagger/doc.html` 查看。
 
-- `api/user.api`: 用户服务 API 定义
-- `api/product.api`: 产品服务 API 定义
-- `api/order.api`: 订单服务 API 定义
+## 许可证
 
-## 项目结构
-
-```
-├── api/                # API 定义文件
-├── cmd/                # 服务入口点
-├── etc/                # 配置文件
-├── internal/           # 内部包
-│   ├── config/        # 配置结构
-│   ├── handler/       # HTTP 处理器
-│   ├── logic/         # 业务逻辑
-│   ├── svc/          # 服务上下文
-│   └── types/        # 类型定义
-└── README.md          # 项目文档
-```
-
-## 贡献
-
-欢迎贡献！请随时提交 Pull Request。
+本项目采用 MIT 许可证 - 查看 LICENSE 文件了解详情。

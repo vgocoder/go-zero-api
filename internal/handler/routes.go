@@ -12,6 +12,23 @@ import (
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
+	// 注册Swagger文档路由
+	server.AddRoute(rest.Route{
+		Method: http.MethodGet,
+		Path:   "/swagger/*any",
+		Handler: func(w http.ResponseWriter, r *http.Request) {
+			http.StripPrefix("/swagger/", http.FileServer(http.Dir("swagger"))).ServeHTTP(w, r)
+		},
+	})
+	// 添加重定向到swagger文档页面的路由
+	server.AddRoute(rest.Route{
+		Method: http.MethodGet,
+		Path:   "/swagger",
+		Handler: func(w http.ResponseWriter, r *http.Request) {
+			http.Redirect(w, r, "/swagger/doc.html", http.StatusMovedPermanently)
+		},
+	})
+
 	server.AddRoutes(
 		[]rest.Route{
 			{

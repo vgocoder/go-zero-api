@@ -31,6 +31,7 @@ This is a RESTful API service built with go-zero framework, providing backend se
 - Go 1.16 or later
 - go-zero framework
 - MySQL (for data storage)
+- Redis (for caching)
 
 ## Installation
 
@@ -49,9 +50,34 @@ go mod tidy
 
 The configuration files are located in the `etc` directory. You need to configure the following files according to your environment:
 
-- `etc/user-api.yaml`: User service configuration
-- `etc/product-api.yaml`: Product service configuration
-- `etc/order-api.yaml`: Order service configuration
+- `etc/user-api.yaml`: User service configuration (Port: 8888)
+- `etc/product-api.yaml`: Product service configuration (Port: 8889)
+- `etc/order-api.yaml`: Order service configuration (Port: 8890)
+
+Configuration file structure:
+```yaml
+Name: service-name
+Host: 0.0.0.0
+Port: port-number
+
+customLog:
+  mode: file
+  level: info
+  path: logs/service-name.log
+
+database:
+  host: localhost
+  port: 3306
+  username: root
+  password: password
+  dbname: database_name
+
+redis:
+  host: localhost
+  port: 6379
+  password: ""
+  db: 0
+```
 
 ## Running the Services
 
@@ -59,54 +85,47 @@ The project uses Cobra CLI framework for command-line interface. You can start d
 
 1. Build the project
 ```bash
-go build -o goapi cmd/main.go
+go build -o goapi main.go
 ```
 
-2. View available commands
+2. Run directly (without building)
+```bash
+# Start user service
+go run main.go service user -f etc/user-api.yaml
+
+# Start product service
+go run main.go service product -f etc/product-api.yaml
+
+# Start order service
+go run main.go service order -f etc/order-api.yaml
+```
+
+3. View available commands
 ```bash
 ./goapi --help
 ```
 
-3. Start services
+4. Start services
 ```bash
 # Start user service
-./goapi user -f etc/user-api.yaml
+./goapi service user -f etc/user-api.yaml
 
 # Start product service
-./goapi product -f etc/product-api.yaml
+./goapi service product -f etc/product-api.yaml
 
 # Start order service
-./goapi order -f etc/order-api.yaml
+./goapi service order -f etc/order-api.yaml
 ```
 
-4. View version
+5. View version
 ```bash
 ./goapi --version
 ```
 
 ## API Documentation
 
-The API definitions can be found in the `api` directory:
+API documentation is available at `/swagger/doc.html` after starting the service.
 
-- `api/user.api`: User service API definitions
-- `api/product.api`: Product service API definitions
-- `api/order.api`: Order service API definitions
+## License
 
-## Project Structure
-
-```
-├── api/                # API definitions
-├── cmd/                # Service entry points
-├── etc/                # Configuration files
-├── internal/           # Internal packages
-│   ├── config/        # Configuration structures
-│   ├── handler/       # HTTP handlers
-│   ├── logic/         # Business logic
-│   ├── svc/          # Service context
-│   └── types/        # Type definitions
-└── README.md          # Project documentation
-```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+This project is licensed under the MIT License - see the LICENSE file for details.
