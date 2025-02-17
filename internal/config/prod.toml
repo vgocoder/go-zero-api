@@ -1,0 +1,27 @@
+# 生产环境配置
+
+[RestConf]
+Name = "goapi"
+Host = "0.0.0.0"
+Port = 80
+
+[Database]
+Host = "db.production.local"
+Port = 3306
+User = "prod_user"
+Password = "prod_password"
+DBName = "goapi_prod"
+
+[Redis]
+Host = "redis.production.local"
+Port = 6379
+Password = "prod_redis_password"
+DB = 0
+
+[Log]
+Level = "info"
+FilePath = "/var/log/goapi/app.log"
+MaxSize = 500
+MaxBackups = 30
+MaxAge = 30
+Compress = true

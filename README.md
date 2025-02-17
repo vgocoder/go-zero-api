@@ -55,22 +55,33 @@ The configuration files are located in the `etc` directory. You need to configur
 
 ## Running the Services
 
-1. Start the user service
+The project uses Cobra CLI framework for command-line interface. You can start different services using the following commands:
+
+1. Build the project
 ```bash
-cd cmd/user
-go run main.go -f ../../etc/user-api.yaml
+go build -o goapi cmd/main.go
 ```
 
-2. Start the product service
+2. View available commands
 ```bash
-cd cmd/product
-go run main.go -f ../../etc/product-api.yaml
+./goapi --help
 ```
 
-3. Start the order service
+3. Start services
 ```bash
-cd cmd/order
-go run main.go -f ../../etc/order-api.yaml
+# Start user service
+./goapi user -f etc/user-api.yaml
+
+# Start product service
+./goapi product -f etc/product-api.yaml
+
+# Start order service
+./goapi order -f etc/order-api.yaml
+```
+
+4. View version
+```bash
+./goapi --version
 ```
 
 ## API Documentation
@@ -98,12 +109,4 @@ The API definitions can be found in the `api` directory:
 
 ## Contributing
 
-Welcome to contribute to this project. You can:
-
-1. Submit issues
-2. Create pull requests
-3. Improve documentation
-
-## License
-
-This project is licensed under the MIT License.
+Contributions are welcome! Please feel free to submit a Pull Request.

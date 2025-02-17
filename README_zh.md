@@ -55,22 +55,33 @@ go mod tidy
 
 ## 运行服务
 
-1. 启动用户服务
+项目使用 Cobra CLI 框架作为命令行接口。您可以使用以下命令启动不同的服务：
+
+1. 构建项目
 ```bash
-cd cmd/user
-go run main.go -f ../../etc/user-api.yaml
+go build -o goapi cmd/main.go
 ```
 
-2. 启动产品服务
+2. 查看可用命令
 ```bash
-cd cmd/product
-go run main.go -f ../../etc/product-api.yaml
+./goapi --help
 ```
 
-3. 启动订单服务
+3. 启动服务
 ```bash
-cd cmd/order
-go run main.go -f ../../etc/order-api.yaml
+# 启动用户服务
+./goapi user -f etc/user-api.yaml
+
+# 启动产品服务
+./goapi product -f etc/product-api.yaml
+
+# 启动订单服务
+./goapi order -f etc/order-api.yaml
+```
+
+4. 查看版本
+```bash
+./goapi --version
 ```
 
 ## API 文档
@@ -98,12 +109,4 @@ API 定义文件位于 `api` 目录下：
 
 ## 贡献
 
-欢迎为这个项目做出贡献。您可以：
-
-1. 提交问题
-2. 创建合并请求
-3. 改进文档
-
-## 许可证
-
-本项目采用 MIT 许可证。
+欢迎贡献！请随时提交 Pull Request。

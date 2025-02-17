@@ -1,0 +1,27 @@
+# 开发环境配置
+
+[RestConf]
+Name = "goapi"
+Host = "0.0.0.0"
+Port = 8888
+
+[Database]
+Host = "localhost"
+Port = 3306
+User = "dev_user"
+Password = "dev_password"
+DBName = "goapi_dev"
+
+[Redis]
+Host = "localhost"
+Port = 6379
+Password = ""
+DB = 0
+
+[Log]
+Level = "debug"
+FilePath = "logs/app.log"
+MaxSize = 100
+MaxBackups = 10
+MaxAge = 7
+Compress = true
