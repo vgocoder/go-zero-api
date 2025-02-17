@@ -1,0 +1,86 @@
+syntax = "v1"
+
+info (
+	title:  "设备管理服务"
+	desc:   "提供设备绑定、查询、更新等基本功能的API服务"
+	author: "author"
+	email:  "email"
+)
+
+type (
+	Device {
+		Id           int64  `json:"id"`
+		UserId       int64  `json:"user_id"`
+		Name         string `json:"name"`          // 设备名称
+		SerialNumber string `json:"serial_number"` // 设备序列号
+		Type         string `json:"type"`          // 设备类型：手环、手表等
+		Model        string `json:"model"`         // 设备型号
+		Status       string `json:"status"`        // 设备状态：已绑定、未绑定等
+		LastSyncTime string `json:"last_sync_time"` // 最后同步时间
+		CreatedAt    string `json:"created_at"`
+		UpdatedAt    string `json:"updated_at"`
+	}
+
+	BindDeviceRequest {
+		SerialNumber string `json:"serial_number"`
+		Name         string `json:"name,optional"`
+	}
+
+	BindDeviceResponse {
+		Device Device `json:"device"`
+	}
+
+	GetDeviceRequest {
+		Id int64 `path:"id"`
+	}
+
+	GetDeviceResponse {
+		Device Device `json:"device"`
+	}
+
+	ListDevicesRequest {
+		Page     int64  `form:"page,default=1"`
+		PageSize int64  `form:"page_size,default=10"`
+		Type     string `form:"type,optional"`   // 按设备类型筛选
+		Status   string `form:"status,optional"` // 按设备状态筛选
+	}
+
+	ListDevicesResponse {
+		Devices []Device `json:"devices"`
+		Total   int64    `json:"total"`
+	}
+
+	UpdateDeviceRequest {
+		Id   int64  `path:"id"`
+		Name string `json:"name,optional"`
+	}
+
+	UpdateDeviceResponse {
+		Device Device `json:"device"`
+	}
+
+	UnbindDeviceRequest {
+		Id int64 `path:"id"`
+	}
+
+	UnbindDeviceResponse {
+		Message string `json:"message"`
+	}
+)
+
+service device-api {
+	@handler BindDevice
+	post /api/devices/bind (BindDeviceRequest) returns (BindDeviceResponse)
+
+	@handler GetDevice
+	get /api/devices/:id (GetDeviceRequest) returns (GetDeviceResponse)
+
+	@handler ListDevices
+	get /api/devices (ListDevicesRequest) returns (ListDevicesResponse)
+
+	@handler UpdateDevice
+	put /api/devices/:id (UpdateDeviceRequest) returns (UpdateDeviceResponse)
+
+	@handler UnbindDevice
+	post /api/devices/:id/unbind (UnbindDeviceRequest) returns (UnbindDeviceResponse)
+}

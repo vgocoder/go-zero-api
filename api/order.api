@@ -1,0 +1,73 @@
+syntax = "v1"
+
+info (
+	title:  "订单管理服务"
+	desc:   "提供订单创建、查询、更新、状态管理等基本功能的API服务"
+	author: "author"
+	email:  "email"
+)
+
+type (
+	Order {
+		Id         int64   `json:"id"`
+		UserId     int64   `json:"user_id"`
+		ProductId  int64   `json:"product_id"`
+		Quantity   int64   `json:"quantity"`
+		TotalPrice float64 `json:"total_price"`
+		Status     string  `json:"status"`
+		CreatedAt  string  `json:"created_at"`
+		UpdatedAt  string  `json:"updated_at"`
+	}
+	CreateOrderRequest {
+		ProductId int64 `json:"product_id"`
+		Quantity  int64 `json:"quantity"`
+	}
+	CreateOrderResponse {
+		Order Order `json:"order"`
+	}
+	GetOrderRequest {
+		Id int64 `path:"id"`
+	}
+	GetOrderResponse {
+		Order Order `json:"order"`
+	}
+	ListOrdersRequest {
+		Page     int64  `form:"page,default=1"`
+		PageSize int64  `form:"page_size,default=10"`
+		Status   string `form:"status,optional"`
+	}
+	ListOrdersResponse {
+		Orders []Order `json:"orders"`
+		Total  int64   `json:"total"`
+	}
+	UpdateOrderStatusRequest {
+		Id     int64  `path:"id"`
+		Status string `json:"status"`
+	}
+	UpdateOrderStatusResponse {
+		Order Order `json:"order"`
+	}
+	CancelOrderRequest {
+		Id int64 `path:"id"`
+	}
+	CancelOrderResponse {
+		Message string `json:"message"`
+	}
+)
+
+service order-api {
+	@handler CreateOrder
+	post /api/orders (CreateOrderRequest) returns (CreateOrderResponse)
+
+	@handler GetOrder
+	get /api/orders/:id (GetOrderRequest) returns (GetOrderResponse)
+
+	@handler ListOrders
+	get /api/orders (ListOrdersRequest) returns (ListOrdersResponse)
+
+	@handler UpdateOrderStatus
+	put /api/orders/:id/status (UpdateOrderStatusRequest) returns (UpdateOrderStatusResponse)
+
+	@handler CancelOrder
+	post /api/orders/:id/cancel (CancelOrderRequest) returns (CancelOrderResponse)
+}

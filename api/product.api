@@ -1,0 +1,78 @@
+syntax = "v1"
+
+info (
+	title:  "Product API"
+	desc:   "Product management API"
+	author: "author"
+	email:  "email"
+)
+
+type Product {
+	Id          int64   `json:"id"`
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	Price       float64 `json:"price"`
+	Stock       int64   `json:"stock"`
+	CreatedAt   string  `json:"created_at"`
+	UpdatedAt   string  `json:"updated_at"`
+}
+
+type (
+	CreateProductRequest {
+		Name        string  `json:"name"`
+		Description string  `json:"description"`
+		Price       float64 `json:"price"`
+		Stock       int64   `json:"stock"`
+	}
+	CreateProductResponse {
+		Product Product `json:"product"`
+	}
+	UpdateProductRequest {
+		Id          int64   `path:"id"`
+		Name        string  `json:"name,optional"`
+		Description string  `json:"description,optional"`
+		Price       float64 `json:"price,optional"`
+		Stock       int64   `json:"stock,optional"`
+	}
+	UpdateProductResponse {
+		Product Product `json:"product"`
+	}
+	DeleteProductRequest {
+		Id int64 `path:"id"`
+	}
+	DeleteProductResponse {
+		Message string `json:"message"`
+	}
+	GetProductRequest {
+		Id int64 `path:"id"`
+	}
+	GetProductResponse {
+		Product Product `json:"product"`
+	}
+	ListProductsRequest {
+		Page     int64 `form:"page,default=1"`
+		PageSize int64 `form:"page_size,default=10"`
+	}
+	ListProductsResponse {
+		Products []Product `json:"products"`
+		Total    int64     `json:"total"`
+	}
+)
+
+service product-api {
+	@handler CreateProduct
+	post /api/products (CreateProductRequest) returns (CreateProductResponse)
+
+	@handler UpdateProduct
+	put /api/products/:id (UpdateProductRequest) returns (UpdateProductResponse)
+
+	@handler DeleteProduct
+	delete /api/products/:id (DeleteProductRequest) returns (DeleteProductResponse)
+
+	@handler GetProduct
+	get /api/products/:id (GetProductRequest) returns (GetProductResponse)
+
+	@handler ListProducts
+	get /api/products (ListProductsRequest) returns (ListProductsResponse)
+}
+

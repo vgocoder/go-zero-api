@@ -1,0 +1,101 @@
+syntax = "v1"
+
+info (
+	title:  "运动记录服务"
+	desc:   "提供运动记录的创建、查询、更新等基本功能的API服务"
+	author: "author"
+	email:  "email"
+)
+
+type (
+	Workout {
+		Id          int64   `json:"id"`
+		UserId      int64   `json:"user_id"`
+		Type        string  `json:"type"`        // 运动类型：跑步、骑行等
+		Duration    int64   `json:"duration"`    // 运动时长（秒）
+		Distance    float64 `json:"distance"`    // 运动距离（米）
+		Calories    float64 `json:"calories"`    // 消耗卡路里
+		StartTime   string  `json:"start_time"`  // 开始时间
+		EndTime     string  `json:"end_time"`    // 结束时间
+		DeviceId    int64   `json:"device_id"`   // 关联的设备ID
+		Description string  `json:"description"` // 运动描述
+		CreatedAt   string  `json:"created_at"`
+		UpdatedAt   string  `json:"updated_at"`
+	}
+
+	CreateWorkoutRequest {
+		Type        string  `json:"type"`
+		Duration    int64   `json:"duration"`
+		Distance    float64 `json:"distance"`
+		Calories    float64 `json:"calories"`
+		StartTime   string  `json:"start_time"`
+		EndTime     string  `json:"end_time"`
+		DeviceId    int64   `json:"device_id,optional"`
+		Description string  `json:"description,optional"`
+	}
+
+	CreateWorkoutResponse {
+		Workout Workout `json:"workout"`
+	}
+
+	GetWorkoutRequest {
+		Id int64 `path:"id"`
+	}
+
+	GetWorkoutResponse {
+		Workout Workout `json:"workout"`
+	}
+
+	ListWorkoutsRequest {
+		Page     int64  `form:"page,default=1"`
+		PageSize int64  `form:"page_size,default=10"`
+		Type     string `form:"type,optional"`      // 按运动类型筛选
+		StartDate string `form:"start_date,optional"` // 按开始日期筛选
+		EndDate   string `form:"end_date,optional"`   // 按结束日期筛选
+	}
+
+	ListWorkoutsResponse {
+		Workouts []Workout `json:"workouts"`
+		Total    int64     `json:"total"`
+	}
+
+	UpdateWorkoutRequest {
+		Id          int64   `path:"id"`
+		Type        string  `json:"type,optional"`
+		Duration    int64   `json:"duration,optional"`
+		Distance    float64 `json:"distance,optional"`
+		Calories    float64 `json:"calories,optional"`
+		StartTime   string  `json:"start_time,optional"`
+		EndTime     string  `json:"end_time,optional"`
+		Description string  `json:"description,optional"`
+	}
+
+	UpdateWorkoutResponse {
+		Workout Workout `json:"workout"`
+	}
+
+	DeleteWorkoutRequest {
+		Id int64 `path:"id"`
+	}
+
+	DeleteWorkoutResponse {
+		Message string `json:"message"`
+	}
+)
+
+service workout-api {
+	@handler CreateWorkout
+	post /api/workouts (CreateWorkoutRequest) returns (CreateWorkoutResponse)
+
+	@handler GetWorkout
+	get /api/workouts/:id (GetWorkoutRequest) returns (GetWorkoutResponse)
+
+	@handler ListWorkouts
+	get /api/workouts (ListWorkoutsRequest) returns (ListWorkoutsResponse)
+
+	@handler UpdateWorkout
+	put /api/workouts/:id (UpdateWorkoutRequest) returns (UpdateWorkoutResponse)
+
+	@handler DeleteWorkout
+	delete /api/workouts/:id (DeleteWorkoutRequest) returns (DeleteWorkoutResponse)
+}
